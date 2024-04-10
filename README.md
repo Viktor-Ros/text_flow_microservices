@@ -20,7 +20,7 @@
 * Spring Boot 2.7.0
 * Spring JPA 2.7.0
 * Spring Cloud 3.1.1
-* MySQL 8.0.36
+* PostgreSQL 13
 * JUnit 5
 * Spring Cloud Eureka
 * Spring Cloud Gateway
@@ -32,16 +32,16 @@
 
 ### <a id="title2">Инструкция по запуску:</a>
 
-*  В каждом файле ***application.properties*** сервисов: ***employee_service***, ***story_service***, ***subscription_service*** указать параметры существующей БД mySQL или создать новую с параметрами:
+*  В каждом файле ***application.properties*** сервисов: ***employee_service***, ***story_service***, ***subscription_service*** указать параметры существующей БД или создать новую с параметрами:
     - host = localhost
-    - port = 3306
+    - port = 5432
     - user - bestuser
     - password - bestuser
     - name - text_flow_db
 *  Запустить все сервисы из классов ****App***
-*  При первом запуске сервиса ***employee_service*** в БД создаются таблицы и начальные тестовые данные по запросам из файла ***data.sql***
-*  После первого запуска ***employee_service*** необходимо удалить из ***application.properties*** параметр ***spring.sql.init.mode*** или присвоить ему значение ***never***
-*  Либо перед первым запуском ***employee_service*** удалить ***spring.sql.init.mode***, а вместо этого прогнать в БД запросы из файла ***data.sql***
+*  При первом запуске сервиса ***employee_service*** в БД создаются таблицы и начальные тестовые данные
+*  Также запросы для создания таблиц и стартовых данных лежат в ***resources/sql/data.sql***
+
 
 ### <a id="title3">Инструкция по тестированию:</a>
 

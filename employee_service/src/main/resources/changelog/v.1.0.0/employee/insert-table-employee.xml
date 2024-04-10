@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<databaseChangeLog
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
+
+    <changeSet logicalFilePath="insert-employee" id="insert-employee" author="v.r">
+
+        <insert tableName="employee">
+            <column  name="id"  value="emp000000000001"/>
+            <column  name="creation_date"  value="now()"/>
+            <column  name="modify_date"  value="now()"/>
+            <column  name="name"  value="testUser1"/>
+        </insert>
+
+        <insert tableName="employee">
+            <column  name="id"  value="emp000000000002"/>
+            <column  name="creation_date"  value="now()"/>
+            <column  name="modify_date"  value="now()"/>
+            <column  name="name"  value="testUser2"/>
+        </insert>
+
+        <insert tableName="employee">
+            <column  name="id"  value="emp000000000003"/>
+            <column  name="creation_date"  value="now()"/>
+            <column  name="modify_date"  value="now()"/>
+            <column  name="name"  value="testUser3"/>
+        </insert>
+
+    </changeSet>
+
+</databaseChangeLog>
