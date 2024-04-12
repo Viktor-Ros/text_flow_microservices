@@ -22,6 +22,7 @@
 * Spring Cloud 3.1.1
 * PostgreSQL 13
 * JUnit 5
+* Docker
 * Spring Cloud Eureka
 * Spring Cloud Gateway
 * Spring Cloud OpenFeign
@@ -32,7 +33,7 @@
 
 ### <a id="title2">Инструкция по запуску:</a>
 
-*  В каждом файле ***application.properties*** сервисов: ***employee_service***, ***story_service***, ***subscription_service*** указать параметры существующей БД или создать новую с параметрами:
+*  В каждом ***application.properties*** сервисов: ***employee_service***, ***story_service***, ***subscription_service*** указать параметры существующей БД или создать новую с параметрами:
     - host = localhost
     - port = 5432
     - user - bestuser
@@ -41,11 +42,15 @@
 *  Запустить все сервисы из классов ****App***
 *  При первом запуске сервиса ***employee_service*** в БД создаются таблицы и начальные тестовые данные
 *  Также запросы для создания таблиц и стартовых данных лежат в ***resources/sql/data.sql***
+   
+*  Либо запустить с помощью Docker:
+    - запускаем сборку сервисов ***employee_service***, ***story_service***, ***subscription_service*** консольной командой ***mvn clean install -DskipTests=true***
+    - используем консольную команду ***docker-compose up*** в корневой директории проекта
 
 
 ### <a id="title3">Инструкция по тестированию:</a>
 
-*  Тесты настроены на работу с начальными тестовыми данными(класс ***TestData***), которые генерируются из файла ***data.sql***
+*  Тесты настроены на работу с начальными тестовыми данными(класс ***TestData***), которые генерируются из файла ***resources/sql/data.sql***
 *  В сервисах ***employee_service*** и ***story_service*** тесты, которые требуют запущенных сервисов ***subscription_service*** и ***eureka_service***, помечены @Disabled
 *  В сервисе ***text_flow_service*** для корректной работы тестов необходимо запустить все сервисы
 *  Тесты прогоняются при сборке с помощью консольной команды: ***mvn clean install***
@@ -97,7 +102,7 @@
     - GET - "" - получение списка всех сущностей
     
 
-### <a id="title7">Схема базы данных(файл data.sql):</a>
+### <a id="title7">Схема базы данных(файл resources/sql/data.sql):</a>
 
  * #### base - дефолтные поля любой сущности - не таблица!!!
     - id - идентификатор

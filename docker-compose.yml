@@ -1,0 +1,111 @@
+version: '3.8'
+services:
+
+  employee-service:
+    container_name: employee-service
+    image: employee-service:latest
+    build:
+      context: employee_service
+    ports:
+      - "8081:8081"
+    depends_on:
+      service-db:
+        condition: service_healthy
+      eureka-service:
+        condition: service_healthy
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://service-db/text_flow_db
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eureka-service:8761/eureka
+
+  story-service:
+    container_name: story-service
+    image: story-service:latest
+    build:
+      context: story_service
+    ports:
+      - "8083:8083"
+    depends_on:
+      service-db:
+        condition: service_healthy
+      eureka-service:
+        condition: service_healthy
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://service-db/text_flow_db
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eureka-service:8761/eureka
+
+  subscription-service:
+    container_name: subscription-service
+    image: subscription-service:latest
+    build:
+      context: subscription_service
+    ports:
+      - "8082:8082"
+    depends_on:
+      service-db:
+        condition: service_healthy
+      eureka-service:
+        condition: service_healthy
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://service-db/text_flow_db
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eureka-service:8761/eureka
+
+  textflow-service:
+    container_name: textflow-service
+    image: textflow-service:latest
+    build:
+      context: text_flow_service
+    ports:
+      - "8084:8084"
+    depends_on:
+      eureka-service:
+        condition: service_healthy
+    environment:
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eureka-service:8761/eureka
+      SERVER_SERVLET_CONTEXT-PATH: /textflow
+
+  eureka-service:
+    container_name: eureka-service
+    image: eureka-service:latest
+    build:
+      context: eureka_service
+    ports:
+      - "8761:8761"
+    healthcheck:
+      test: "curl --fail --silent localhost:8761 | grep UP || exit 1"
+      interval: 10s
+      timeout: 10s
+      retries: 10
+
+  service-db:
+    image: postgres:14.7-alpine
+    environment:
+      POSTGRES_USER: bestuser
+      POSTGRES_PASSWORD: bestuser
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -d text_flow_db -U bestuser"]
+      interval: 3s
+      timeout: 3s
+      retries: 3
+
+    ports:
+      - "15432:5432"
+    volumes:
+      - ./resources/sql/create_db.sql:/docker-entrypoint-initdb.d/create_db.sql
+      - db-data:/var/lib/postgresql/data
+    restart: unless-stopped
+
+  pgadmin:
+    container_name: pgadmin4_container
+    image: dpage/pgadmin4:7
+    restart: always
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@admin.com
+      PGADMIN_DEFAULT_PASSWORD: root
+    ports:
+      - "5050:80"
+    volumes:
+      - pgadmin-data:/var/lib/pgadmin
+
+volumes:
+  db-data:
+  pgadmin-data:
